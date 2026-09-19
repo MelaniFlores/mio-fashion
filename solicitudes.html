@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solicitudes — Mío Fashion</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white text-neutral-900 font-sans">
+
+  <header class="border-b border-neutral-200">
+    <nav class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="text-xl font-semibold text-pink-600">mío fashion</a>
+      <ul class="hidden md:flex gap-8 text-sm">
+        <li><a href="index.html" class="hover:text-pink-600">Inicio</a></li>
+        <li><a href="catalogo.html" class="hover:text-pink-600">Catálogo</a></li>
+        <li><a href="solicitudes.html" class="text-pink-600">Solicitudes</a></li>
+        <li><a href="nosotros.html" class="hover:text-pink-600">Acerca de Nosotros</a></li>
+      </ul>
+      <a href="login.html" class="text-sm border border-neutral-300 px-4 py-2 rounded-full hover:border-pink-600 hover:text-pink-600">
+        Iniciar sesión
+      </a>
+    </nav>
+  </header>
+
+  <main class="max-w-2xl mx-auto px-6 py-16">
+    <h1 class="text-3xl font-semibold mb-2">¿No encuentras un producto?</h1>
+    <p class="text-neutral-600 mb-10">
+      Pídelo por encargo. Trabajamos con marcas como Dior, Estée Lauder y Too Faced
+      que no siempre están en stock inmediato.
+    </p>
+
+    <!-- Mensaje de éxito -->
+    <div id="mensaje-exito" class="hidden border border-green-200 bg-green-50 text-green-800 rounded-lg p-4 mb-6 text-sm">
+      Tu solicitud fue registrada. El equipo de Mío Fashion te contactará pronto.
+    </div>
+
+    <form id="form-solicitud" novalidate>
+      <label class="block text-sm mb-1">Tu nombre</label>
+      <input type="text" id="sol-nombre" class="w-full border border-neutral-300 rounded-lg px-3 py-2 mb-1">
+      <p class="text-xs text-red-600 mb-4 hidden" id="error-sol-nombre"></p>
+
+      <label class="block text-sm mb-1">Número de WhatsApp</label>
+      <input type="tel" id="sol-telefono" placeholder="7777-7777" class="w-full border border-neutral-300 rounded-lg px-3 py-2 mb-1">
+      <p class="text-xs text-red-600 mb-4 hidden" id="error-sol-telefono"></p>
+
+      <label class="block text-sm mb-1">Producto que buscas</label>
+      <input type="text" id="sol-producto" class="w-full border border-neutral-300 rounded-lg px-3 py-2 mb-1">
+      <p class="text-xs text-red-600 mb-4 hidden" id="error-sol-producto"></p>
+
+      <label class="block text-sm mb-1">Marca (opcional)</label>
+      <input type="text" id="sol-marca" class="w-full border border-neutral-300 rounded-lg px-3 py-2 mb-4">
+
+      <label class="block text-sm mb-1">Detalles</label>
+      <textarea id="sol-detalle" rows="4" placeholder="Tono, presentación, cantidad..." class="w-full border border-neutral-300 rounded-lg px-3 py-2 mb-1"></textarea>
+      <p class="text-xs text-red-600 mb-4 hidden" id="error-sol-detalle"></p>
+
+      <button type="submit" class="w-full bg-neutral-900 text-white py-3 rounded-full text-sm hover:bg-neutral-700">
+        Enviar solicitud
+      </button>
+    </form>
+  </main>
+
+  <script src="js/datos.js"></script>
+  <script src="js/solicitudes.js"></script>
+</body>
+</html>
