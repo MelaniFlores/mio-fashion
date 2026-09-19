@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mío Fashion — Maquillaje, catalogado.</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white text-neutral-900 font-sans">
+
+  <!-- NAVBAR -->
+  <header class="border-b border-neutral-200 sticky top-0 bg-white z-10">
+    <nav class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="text-xl font-semibold text-pink-600">mío fashion</a>
+
+      <ul class="hidden md:flex gap-8 text-sm">
+        <li><a href="index.html" class="hover:text-pink-600">Inicio</a></li>
+        <li><a href="catalogo.html" class="hover:text-pink-600">Catálogo</a></li>
+        <li><a href="solicitudes.html" class="hover:text-pink-600">Solicitudes</a></li>
+        <li><a href="nosotros.html" class="hover:text-pink-600">Acerca de Nosotros</a></li>
+      </ul>
+
+      <a href="login.html" class="text-sm border border-neutral-300 px-4 py-2 rounded-full hover:border-pink-600 hover:text-pink-600">
+        Iniciar sesión
+      </a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="max-w-6xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-12 items-center">
+    <div>
+      <h1 class="text-5xl md:text-6xl font-semibold leading-tight tracking-tight">
+        Maquillaje,<br>catalogado.
+      </h1>
+      <p class="mt-6 text-neutral-600 leading-relaxed">
+        Todo el catálogo de Mío Fashion en un solo lugar. Explora por categoría,
+        arma tu pedido y envíalo por WhatsApp sin esperar respuestas.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="catalogo.html" class="bg-neutral-900 text-white px-6 py-3 rounded-full text-sm hover:bg-neutral-700">
+          Ver catálogo
+        </a>
+        <a href="solicitudes.html" class="border border-neutral-300 px-6 py-3 rounded-full text-sm hover:border-neutral-900">
+          Solicitar producto especial
+        </a>
+      </div>
+    </div>
+
+    <div class="bg-neutral-100 rounded-2xl h-80"></div>
+  </section>
+
+  <!-- CATEGORÍAS -->
+  <section class="border-t border-neutral-200">
+    <div class="max-w-6xl mx-auto px-6 py-10">
+      <div class="grid grid-cols-2 md:grid-cols-6 gap-4 text-sm">
+        <a href="catalogo.html" class="py-3 text-center border border-neutral-200 rounded-lg hover:border-pink-600 hover:text-pink-600">Labios</a>
+        <a href="catalogo.html" class="py-3 text-center border border-neutral-200 rounded-lg hover:border-pink-600 hover:text-pink-600">Ojos</a>
+        <a href="catalogo.html" class="py-3 text-center border border-neutral-200 rounded-lg hover:border-pink-600 hover:text-pink-600">Rostro</a>
+        <a href="catalogo.html" class="py-3 text-center border border-neutral-200 rounded-lg hover:border-pink-600 hover:text-pink-600">Cejas</a>
+        <a href="catalogo.html" class="py-3 text-center border border-neutral-200 rounded-lg hover:border-pink-600 hover:text-pink-600">Brochas</a>
+        <a href="catalogo.html" class="py-3 text-center border border-neutral-200 rounded-lg hover:border-pink-600 hover:text-pink-600">Accesorios</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTOS NUEVOS -->
+  <section class="max-w-6xl mx-auto px-6 py-12">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-sm uppercase tracking-widest text-neutral-500">Lo más nuevo</h2>
+      <a href="catalogo.html" class="text-sm text-pink-600 hover:underline">Ver todo</a>
+    </div>
+
+    <!-- Estas tarjetas las llenará JavaScript más adelante -->
+    <div id="productos-nuevos" class="grid grid-cols-2 md:grid-cols-4 gap-6"></div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-neutral-200 mt-12">
+    <div class="max-w-6xl mx-auto px-6 py-8 text-sm text-neutral-500 flex flex-col md:flex-row justify-between gap-4">
+      <p>© 2026 Mío Fashion. San Salvador, El Salvador.</p>
+      <p>Envíos a todo el país · WhatsApp</p>
+    </div>
+  </footer>
+
+  <script src="js/datos.js"></script>
+  <script src="js/inicio.js"></script>
+</body>
+</html>
