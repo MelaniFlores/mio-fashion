@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo — Mío Fashion</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white text-neutral-900 font-sans">
+
+  <header class="border-b border-neutral-200 sticky top-0 bg-white z-10">
+    <nav class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="text-xl font-semibold text-pink-600">mío fashion</a>
+      <ul class="hidden md:flex gap-8 text-sm">
+        <li><a href="index.html" class="hover:text-pink-600">Inicio</a></li>
+        <li><a href="catalogo.html" class="text-pink-600">Catálogo</a></li>
+        <li><a href="solicitudes.html" class="hover:text-pink-600">Solicitudes</a></li>
+        <li><a href="nosotros.html" class="hover:text-pink-600">Acerca de Nosotros</a></li>
+      </ul>
+      <a href="login.html" class="text-sm border border-neutral-300 px-4 py-2 rounded-full hover:border-pink-600 hover:text-pink-600">
+        Iniciar sesión
+      </a>
+    </nav>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 py-10 grid lg:grid-cols-[200px_1fr_300px] gap-8">
+
+    <!-- SIDEBAR DE FILTROS -->
+    <aside>
+      <input
+        type="text"
+        id="buscador"
+        placeholder="Buscar producto..."
+        class="w-full text-sm border border-neutral-300 rounded-lg px-3 py-2 mb-6"
+      >
+      <h3 class="text-xs uppercase tracking-widest text-neutral-500 mb-3">Categorías</h3>
+      <div id="filtros-categoria" class="flex flex-col gap-1"></div>
+    </aside>
+
+    <!-- LISTA DE PRODUCTOS -->
+    <section>
+      <div class="flex items-baseline justify-between mb-6">
+        <h1 class="text-2xl font-semibold">Catálogo</h1>
+        <span id="contador" class="text-sm text-neutral-500"></span>
+      </div>
+      <div id="lista-productos" class="grid sm:grid-cols-2 gap-6"></div>
+    </section>
+
+    <!-- CARRITO -->
+    <aside class="border border-neutral-200 rounded-xl p-5 h-fit lg:sticky lg:top-24">
+      <h2 class="font-semibold mb-4">Tu pedido</h2>
+      <div id="lista-carrito" class="flex flex-col gap-3 mb-4"></div>
+
+      <div class="border-t border-neutral-200 pt-4 flex justify-between font-semibold mb-4">
+        <span>Total</span>
+        <span id="total-carrito">$0.00</span>
+      </div>
+
+      <!-- Campo de teléfono para validar antes de enviar -->
+      <label class="text-xs text-neutral-500">Tu número de WhatsApp</label>
+      <input
+        type="tel"
+        id="telefono"
+        placeholder="7777-7777"
+        class="w-full text-sm border border-neutral-300 rounded-lg px-3 py-2 mt-1 mb-1"
+      >
+      <p id="error-telefono" class="text-xs text-red-600 mb-3 hidden"></p>
+
+      <button id="btn-whatsapp" class="w-full bg-neutral-900 text-white py-3 rounded-full text-sm hover:bg-neutral-700 mb-2">
+        Enviar pedido por WhatsApp
+      </button>
+      <button id="btn-copiar" class="w-full border border-neutral-300 py-3 rounded-full text-sm hover:border-neutral-900">
+        Copiar pedido
+      </button>
+    </aside>
+
+  </main>
+
+  <script src="js/datos.js"></script>
+  <script src="js/catalogo.js"></script>
+</body>
+</html>
