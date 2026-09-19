@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar sesión — Mío Fashion</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white text-neutral-900 font-sans">
+
+  <header class="border-b border-neutral-200">
+    <nav class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="text-xl font-semibold text-pink-600">mío fashion</a>
+      <ul class="hidden md:flex gap-8 text-sm">
+        <li><a href="index.html" class="hover:text-pink-600">Inicio</a></li>
+        <li><a href="catalogo.html" class="hover:text-pink-600">Catálogo</a></li>
+        <li><a href="solicitudes.html" class="hover:text-pink-600">Solicitudes</a></li>
+        <li><a href="nosotros.html" class="hover:text-pink-600">Acerca de Nosotros</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="max-w-md mx-auto px-6 py-16">
+
+    <!-- Pestañas -->
+    <div class="flex gap-6 border-b border-neutral-200 mb-8">
+      <button id="tab-login" class="pb-3 text-sm border-b-2 border-neutral-900">Iniciar sesión</button>
+      <button id="tab-registro" class="pb-3 text-sm text-neutral-500 border-b-2 border-transparent">Crear cuenta</button>
+    </div>
+
+    <!-- FORMULARIO LOGIN -->
+    <form id="form-login" novalidate>
+      <label class="block text-sm mb-1">Correo electrónico</label>
+      <input type="email" id="login-correo" class="w-full border border-neutral-300 rounded-lg px-3 py-2 mb-1">
+      <p class="text-xs text-red-600 mb-3 hidden" id="error-login-correo"></p>
+
+      <label class="block text-sm mb-1">Contraseña</label>
+      <input type="password" id="login-password" class="w-full border border-neutral-300 rounded-lg px-3 py-2 mb-1">
+      <p class="text-xs text-red-600 mb-3 hidden" id="error-login-password"></p>
+
+      <p class="text-xs text-red-600 mb-3 hidden" id="error-login-general"></p>
+
+      <button type="submit" class="w-full bg-neutral-900 text-white py-3 rounded-full text-sm hover:bg-neutral-700">
+        Entrar
+      </button>
+
+      <p class="text-xs text-neutral-500 mt-4">
+        Cuenta de administrador de prueba:<br>
+        admin@miofashion.com / Admin123
+      </p>
+    </form>
+
+    <!-- FORMULARIO REGISTRO -->
+    <form id="form-registro" class="hidden" novalidate>
+      <label class="block text-sm mb-1">Nombre completo</label>
+      <input type="text" id="reg-nombre" class="w-full border border-neutral-300 rounded-lg px-3 py-2 mb-1">
+      <p class="text-xs text-red-600 mb-3 hidden" id="error-reg-nombre"></p>
+
+      <label class="block text-sm mb-1">Correo electrónico</label>
+      <input type="email" id="reg-correo" class="w-full border border-neutral-300 rounded-lg px-3 py-2 mb-1">
+      <p class="text-xs text-red-600 mb-3 hidden" id="error-reg-correo"></p>
+
+      <label class="block text-sm mb-1">Contraseña</label>
+      <input type="password" id="reg-password" class="w-full border border-neutral-300 rounded-lg px-3 py-2 mb-1">
+      <p class="text-xs text-neutral-500 mb-1">Mínimo 6 caracteres, una mayúscula y un número.</p>
+      <p class="text-xs text-red-600 mb-3 hidden" id="error-reg-password"></p>
+
+      <label class="block text-sm mb-1">Confirmar contraseña</label>
+      <input type="password" id="reg-password2" class="w-full border border-neutral-300 rounded-lg px-3 py-2 mb-1">
+      <p class="text-xs text-red-600 mb-3 hidden" id="error-reg-password2"></p>
+
+      <button type="submit" class="w-full bg-neutral-900 text-white py-3 rounded-full text-sm hover:bg-neutral-700">
+        Crear cuenta
+      </button>
+    </form>
+
+  </main>
+
+  <script src="js/datos.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

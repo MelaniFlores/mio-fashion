@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Mío Fashion</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body class="bg-white text-neutral-900 font-sans">
+
+  <header class="border-b border-neutral-200">
+    <nav class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="text-xl font-semibold text-pink-600">mío fashion</a>
+      <div class="flex items-center gap-4 text-sm">
+        <span id="nombre-usuario" class="text-neutral-500"></span>
+        <button id="btn-salir" class="border border-neutral-300 px-4 py-2 rounded-full hover:border-neutral-900">
+          Cerrar sesión
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 py-10">
+    <h1 class="text-2xl font-semibold mb-8">Panel de administración</h1>
+
+    <!-- MÉTRICAS -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+      <div class="border border-neutral-200 rounded-xl p-4">
+        <p class="text-xs text-neutral-500">Productos</p>
+        <p id="metrica-productos" class="text-2xl font-semibold">0</p>
+      </div>
+      <div class="border border-neutral-200 rounded-xl p-4">
+        <p class="text-xs text-neutral-500">Solicitudes</p>
+        <p id="metrica-solicitudes" class="text-2xl font-semibold">0</p>
+      </div>
+      <div class="border border-neutral-200 rounded-xl p-4">
+        <p class="text-xs text-neutral-500">Pedidos</p>
+        <p id="metrica-pedidos" class="text-2xl font-semibold">0</p>
+      </div>
+      <div class="border border-neutral-200 rounded-xl p-4">
+        <p class="text-xs text-neutral-500">Valor inventario</p>
+        <p id="metrica-valor" class="text-2xl font-semibold">$0</p>
+      </div>
+    </div>
+
+    <!-- GRÁFICA -->
+    <section class="border border-neutral-200 rounded-xl p-6 mb-10">
+      <h2 class="font-semibold mb-4">Pedidos y solicitudes por mes</h2>
+      <canvas id="grafica" height="90"></canvas>
+    </section>
+
+    <!-- FORMULARIO DE PRODUCTO -->
+    <section class="border border-neutral-200 rounded-xl p-6 mb-10">
+      <h2 id="titulo-formulario" class="font-semibold mb-4">Agregar producto</h2>
+
+      <form id="form-producto" novalidate class="grid md:grid-cols-5 gap-4">
+        <input type="hidden" id="producto-id">
+
+        <div>
+          <label class="block text-xs text-neutral-500 mb-1">Nombre</label>
+          <input type="text" id="producto-nombre" class="w-full border border-neutral-300 rounded-lg px-3 py-2 text-sm">
+          <p class="text-xs text-red-600 mt-1 hidden" id="error-nombre"></p>
+        </div>
+
+        <div>
+          <label class="block text-xs text-neutral-500 mb-1">Marca</label>
+          <input type="text" id="producto-marca" class="w-full border border-neutral-300 rounded-lg px-3 py-2 text-sm">
+          <p class="text-xs text-red-600 mt-1 hidden" id="error-marca"></p>
+        </div>
+
+        <div>
+          <label class="block text-xs text-neutral-500 mb-1">Categoría</label>
+          <select id="producto-categoria" class="w-full border border-neutral-300 rounded-lg px-3 py-2 text-sm"></select>
+        </div>
+
+        <div>
+          <label class="block text-xs text-neutral-500 mb-1">Precio</label>
+          <input type="number" step="0.01" id="producto-precio" class="w-full border border-neutral-300 rounded-lg px-3 py-2 text-sm">
+          <p class="text-xs text-red-600 mt-1 hidden" id="error-precio"></p>
+        </div>
+
+        <div>
+          <label class="block text-xs text-neutral-500 mb-1">Stock</label>
+          <input type="number" id="producto-stock" class="w-full border border-neutral-300 rounded-lg px-3 py-2 text-sm">
+          <p class="text-xs text-red-600 mt-1 hidden" id="error-stock"></p>
+        </div>
+
+        <div class="md:col-span-5 flex gap-3">
+          <button type="submit" id="btn-guardar" class="bg-neutral-900 text-white px-6 py-2.5 rounded-full text-sm hover:bg-neutral-700">
+            Agregar producto
+          </button>
+          <button type="button" id="btn-cancelar" class="hidden border border-neutral-300 px-6 py-2.5 rounded-full text-sm">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- TABLA DE PRODUCTOS -->
+    <section class="border border-neutral-200 rounded-xl p-6 mb-10">
+      <h2 class="font-semibold mb-4">Catálogo</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="text-left text-neutral-500 border-b border-neutral-200">
+              <th class="pb-2">Producto</th>
+              <th class="pb-2">Marca</th>
+              <th class="pb-2">Categoría</th>
+              <th class="pb-2">Precio</th>
+              <th class="pb-2">Stock</th>
+              <th class="pb-2"></th>
+            </tr>
+          </thead>
+          <tbody id="tabla-productos"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SOLICITUDES -->
+    <section class="border border-neutral-200 rounded-xl p-6">
+      <h2 class="font-semibold mb-4">Solicitudes especiales</h2>
+      <div id="lista-solicitudes" class="flex flex-col gap-3"></div>
+    </section>
+
+  </main>
+
+  <script src="js/datos.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
