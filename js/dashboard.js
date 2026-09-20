@@ -1,5 +1,4 @@
 // ===== PROTECCIÓN DE RUTA =====
-// Si no hay sesión o no es admin, lo sacamos de aquí.
 const sesion = obtenerSesion();
 if (!sesion || sesion.rol !== "admin") {
   window.location.href = "login.html";
@@ -24,7 +23,6 @@ const tituloFormulario = document.getElementById("titulo-formulario");
 const btnGuardar = document.getElementById("btn-guardar");
 const btnCancelar = document.getElementById("btn-cancelar");
 
-// Llenamos el select con las categorías (sin "Todos")
 selectCategoria.innerHTML = CATEGORIAS.filter((c) => c !== "Todos")
   .map((c) => `<option value="${c}">${c}</option>`)
   .join("");
@@ -42,7 +40,8 @@ function mostrarErrorCampo(id, mensaje) {
 // ===== LISTAR (READ) =====
 function pintarTabla() {
   if (productos.length === 0) {
-    tabla.innerHTML = '<tr><td colspan="6" class="py-4 text-neutral-500">No hay productos.</td></tr>';
+    tabla.innerHTML =
+      '<tr><td colspan="6" class="py-4 text-neutral-500">No hay productos.</td></tr>';
     return;
   }
 
@@ -50,7 +49,12 @@ function pintarTabla() {
     .map(
       (producto) => `
     <tr class="border-b border-neutral-100">
-      <td class="py-3">${producto.nombre}</td>
+      <td class="py-3">
+        <div class="flex items-center gap-3">
+          <img src="${producto.imagen}" alt="" class="w-10 h-10 object-cover rounded bg-neutral-100">
+          <span>${producto.nombre}</span>
+        </div>
+      </td>
       <td>${producto.marca}</td>
       <td>${producto.categoria}</td>
       <td>${formatearPrecio(producto.precio)}</td>
@@ -82,6 +86,7 @@ form.addEventListener("submit", (evento) => {
   const categoria = selectCategoria.value;
   const precio = parseFloat(document.getElementById("producto-precio").value);
   const stock = parseInt(document.getElementById("producto-stock").value);
+  const imagen = document.getElementById("producto-imagen").value.trim();
 
   let hayErrores = false;
 
@@ -116,17 +121,25 @@ form.addEventListener("submit", (evento) => {
   if (hayErrores) return;
 
   if (editandoId) {
-    // ACTUALIZAR
     productos = productos.map((p) =>
-      p.id === editandoId ? { ...p, nombre, marca, categoria, precio, stock } : p
+      p.id === editandoId
+        ? { ...p, nombre, marca, categoria, precio, stock, imagen: imagen || p.imagen }
+        : p
     );
     cancelarEdicion();
   } else {
-    // CREAR: el id es el mayor existente + 1
     const nuevoId = productos.length
       ? Math.max(...productos.map((p) => p.id)) + 1
       : 1;
-    productos.push({ id: nuevoId, nombre, marca, categoria, precio, stock });
+    productos.push({
+      id: nuevoId,
+      nombre,
+      marca,
+      categoria,
+      precio,
+      stock,
+      imagen: imagen || "",
+    });
     form.reset();
   }
 
@@ -145,6 +158,7 @@ function empezarEdicion(id) {
   selectCategoria.value = producto.categoria;
   document.getElementById("producto-precio").value = producto.precio;
   document.getElementById("producto-stock").value = producto.stock;
+  document.getElementById("producto-imagen").value = producto.imagen || "";
 
   tituloFormulario.textContent = "Editar producto";
   btnGuardar.textContent = "Guardar cambios";
@@ -184,7 +198,8 @@ function pintarSolicitudes() {
   const contenedor = document.getElementById("lista-solicitudes");
 
   if (solicitudes.length === 0) {
-    contenedor.innerHTML = '<p class="text-sm text-neutral-500">No hay solicitudes registradas.</p>';
+    contenedor.innerHTML =
+      '<p class="text-sm text-neutral-500">No hay solicitudes registradas.</p>';
     return;
   }
 
@@ -223,7 +238,6 @@ function pintarGrafica() {
   const solicitudes = obtenerSolicitudes();
   const pedidos = JSON.parse(localStorage.getItem("pedidos") || "[]");
 
-  // Datos de ejemplo para los meses anteriores + los reales en septiembre
   const datosPedidos = [8, 12, 9, 15, 18, pedidos.length];
   const datosSolicitudes = [3, 5, 4, 7, 6, solicitudes.length];
 
@@ -247,4 +261,7 @@ function pintarGrafica() {
 pintarTabla();
 pintarSolicitudes();
 pintarMetricas();
-pintarGrafica();
+
+if (typeof Chart !== "undefined") {
+  pintarGrafica();
+}

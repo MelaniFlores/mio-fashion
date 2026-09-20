@@ -10,7 +10,7 @@ contenedorNuevos.innerHTML = nuevos
   .map(
     (producto) => `
     <article class="group">
-      <div class="bg-neutral-100 rounded-xl h-48 mb-3"></div>
+      <img src="${producto.imagen}" alt="${producto.nombre}" class="w-full h-48 object-cover rounded-xl mb-3 bg-neutral-100">
       <p class="text-xs text-neutral-500">${producto.marca}</p>
       <h3 class="text-sm font-medium">${producto.nombre}</h3>
       <p class="text-sm mt-1">${formatearPrecio(producto.precio)}</p>

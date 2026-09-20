@@ -62,7 +62,7 @@ function pintarProductos() {
     .map(
       (producto) => `
     <article class="border border-neutral-200 rounded-xl p-4">
-      <div class="bg-neutral-100 rounded-lg h-40 mb-3"></div>
+      <img src="${producto.imagen}" alt="${producto.nombre}" class="w-full h-40 object-cover rounded-lg mb-3 bg-neutral-100">
       <p class="text-xs text-neutral-500">${producto.marca}</p>
       <h3 class="text-sm font-medium">${producto.nombre}</h3>
       <div class="flex items-center justify-between mt-2">
