@@ -157,3 +157,135 @@ inputBuscador.addEventListener("input", (evento) => {
 pintarFiltros();
 pintarProductos();
 pintarCarrito();
+// ===== VALIDACIÓN DE TELÉFONO CON API EXTERNA =====
+const inputTelefono = document.getElementById("telefono");
+const errorTelefono = document.getElementById("error-telefono");
+const btnWhatsapp = document.getElementById("btn-whatsapp");
+const btnCopiar = document.getElementById("btn-copiar");
+
+// Número de WhatsApp del negocio (formato internacional sin +)
+const NUMERO_NEGOCIO = "50377777777";
+
+function mostrarErrorTelefono(mensaje) {
+  if (mensaje) {
+    errorTelefono.textContent = mensaje;
+    errorTelefono.classList.remove("hidden");
+  } else {
+    errorTelefono.classList.add("hidden");
+  }
+}
+
+// Validación local: 8 dígitos que empiezan con 6 o 7 (formato salvadoreño)
+function validarFormatoLocal(telefono) {
+  const soloNumeros = telefono.replace(/\D/g, "");
+  return /^[67]\d{7}$/.test(soloNumeros);
+}
+
+// Validación con API externa. Si la API falla, usamos la validación local
+// para que el usuario no se quede bloqueado.
+async function validarTelefonoConAPI(telefono) {
+  const soloNumeros = telefono.replace(/\D/g, "");
+  try {
+    const respuesta = await fetch(
+      `https://api.core-api.net/v1/phone/validate?phone=503${soloNumeros}`
+    );
+    if (!respuesta.ok) throw new Error("API no disponible");
+    const datos = await respuesta.json();
+    return datos.valid !== false;
+  } catch (error) {
+    console.warn("API de validación no disponible, se usa validación local.", error);
+    return validarFormatoLocal(telefono);
+  }
+}
+
+// Arma el texto del pedido
+function construirMensajePedido() {
+  let texto = "¡Hola Mío Fashion! Quiero hacer este pedido:\n\n";
+
+  carrito.forEach((item) => {
+    texto += `• ${item.nombre} x${item.cantidad} — ${formatearPrecio(item.precio * item.cantidad)}\n`;
+  });
+
+  const total = carrito.reduce((suma, item) => suma + item.precio * item.cantidad, 0);
+  texto += `\nTotal: ${formatearPrecio(total)}`;
+  texto += `\nMi número: ${inputTelefono.value}`;
+
+  return texto;
+}
+
+// Guarda el pedido para que aparezca en las métricas del dashboard
+function registrarPedido() {
+  const pedidos = JSON.parse(localStorage.getItem("pedidos") || "[]");
+  const total = carrito.reduce((suma, item) => suma + item.precio * item.cantidad, 0);
+
+  pedidos.push({
+    id: Date.now(),
+    productos: carrito,
+    total,
+    telefono: inputTelefono.value,
+    fecha: new Date().toLocaleDateString("es-SV"),
+  });
+
+  localStorage.setItem("pedidos", JSON.stringify(pedidos));
+}
+
+btnWhatsapp.addEventListener("click", async () => {
+  if (carrito.length === 0) {
+    mostrarErrorTelefono("Agrega productos al carrito antes de enviar.");
+    return;
+  }
+
+  const telefono = inputTelefono.value.trim();
+
+  if (!telefono) {
+    mostrarErrorTelefono("Ingresa tu número de WhatsApp.");
+    return;
+  }
+
+  if (!validarFormatoLocal(telefono)) {
+    mostrarErrorTelefono("Debe ser un número de 8 dígitos que inicie con 6 o 7.");
+    return;
+  }
+
+  btnWhatsapp.textContent = "Validando número...";
+  btnWhatsapp.disabled = true;
+
+  const esValido = await validarTelefonoConAPI(telefono);
+
+  btnWhatsapp.textContent = "Enviar pedido por WhatsApp";
+  btnWhatsapp.disabled = false;
+
+  if (!esValido) {
+    mostrarErrorTelefono("El número no parece válido. Revísalo por favor.");
+    return;
+  }
+
+  mostrarErrorTelefono("");
+  registrarPedido();
+
+  // encodeURIComponent convierte el texto a formato seguro para URL
+  const mensaje = encodeURIComponent(construirMensajePedido());
+  window.open(`https://wa.me/${NUMERO_NEGOCIO}?text=${mensaje}`, "_blank");
+
+  // Vaciamos el carrito después de enviar
+  carrito = [];
+  guardarCarrito(carrito);
+  pintarCarrito();
+});
+
+btnCopiar.addEventListener("click", async () => {
+  if (carrito.length === 0) {
+    mostrarErrorTelefono("Agrega productos al carrito antes de copiar.");
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(construirMensajePedido());
+    btnCopiar.textContent = "¡Pedido copiado!";
+    setTimeout(() => {
+      btnCopiar.textContent = "Copiar pedido";
+    }, 2000);
+  } catch (error) {
+    mostrarErrorTelefono("No se pudo copiar. Intenta de nuevo.");
+  }
+});
