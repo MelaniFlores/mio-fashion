@@ -57,3 +57,22 @@ protegidas: sin sesión de administrador se redirige al login.
 - `nosotros.html` — Acerca de nosotros
 
 ## Estructura del proyecto
+```
+mio-fashion/
+├── index.html          Inicio
+├── catalogo.html       Catálogo y carrito
+├── login.html          Login y registro
+├── solicitudes.html    Solicitudes especiales
+├── dashboard.html      Panel de administración
+├── nosotros.html       Acerca de nosotros
+├── img/                Imágenes de productos
+├── js/
+│   ├── datos.js        Productos iniciales y utilidades de localStorage
+│   ├── navbar.js       Navbar dinámico según la sesión
+│   ├── inicio.js       Lógica de la página de inicio
+│   ├── catalogo.js     Filtros, buscador, carrito y pedido por WhatsApp
+│   ├── auth.js         Login, registro y protección de rutas
+│   ├── solicitudes.js  Formulario de solicitudes especiales
+│   └── dashboard.js    CRUD de productos, métricas y gráfica
+└── README.md
+```
