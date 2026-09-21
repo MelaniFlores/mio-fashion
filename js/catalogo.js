@@ -62,7 +62,7 @@ function pintarProductos() {
     .map(
       (producto) => `
     <article class="border border-neutral-200 rounded-xl p-4">
-      <img src="${producto.imagen}" alt="${producto.nombre}" class="w-full h-40 object-cover rounded-lg mb-3 bg-neutral-100">
+      <img src="${producto.imagen}" alt="${producto.nombre}" class="w-full h-40 object-contain rounded-lg mb-3 bg-white">
       <p class="text-xs text-neutral-500">${producto.marca}</p>
       <h3 class="text-sm font-medium">${producto.nombre}</h3>
       <div class="flex items-center justify-between mt-2">
@@ -153,10 +153,6 @@ inputBuscador.addEventListener("input", (evento) => {
   pintarProductos();
 });
 
-// ===== ARRANQUE =====
-pintarFiltros();
-pintarProductos();
-pintarCarrito();
 // ===== VALIDACIÓN DE TELÉFONO CON API EXTERNA =====
 const inputTelefono = document.getElementById("telefono");
 const errorTelefono = document.getElementById("error-telefono");
@@ -165,6 +161,12 @@ const btnCopiar = document.getElementById("btn-copiar");
 
 // Número de WhatsApp del negocio (formato internacional sin +)
 const NUMERO_NEGOCIO = "50377777777";
+
+// Llave de Abstract Phone Intelligence API
+const API_KEY_TELEFONO = "7b2199ae102e4a59b1eaface38887da9";
+
+// Código del país, lo actualiza la API. Valor por defecto por si no responde.
+let codigoPais = "+503";
 
 function mostrarErrorTelefono(mensaje) {
   if (mensaje) {
@@ -181,17 +183,20 @@ function validarFormatoLocal(telefono) {
   return /^[67]\d{7}$/.test(soloNumeros);
 }
 
-// Validación con API externa. Si la API falla, usamos la validación local
-// para que el usuario no se quede bloqueado.
+// Valida el número con la API externa de Abstract indicando que es de El Salvador.
+// Si la API falla, usamos la validación local para no bloquear al usuario.
 async function validarTelefonoConAPI(telefono) {
   const soloNumeros = telefono.replace(/\D/g, "");
   try {
     const respuesta = await fetch(
-      `https://api.core-api.net/v1/phone/validate?phone=503${soloNumeros}`
+      `https://phoneintelligence.abstractapi.com/v1/?api_key=${API_KEY_TELEFONO}&phone=${soloNumeros}&country=SV`
     );
     if (!respuesta.ok) throw new Error("API no disponible");
     const datos = await respuesta.json();
-    return datos.valid !== false;
+    if (datos.phone_location && datos.phone_location.country_prefix) {
+      codigoPais = datos.phone_location.country_prefix;
+    }
+    return datos.phone_validation && datos.phone_validation.is_valid === true;
   } catch (error) {
     console.warn("API de validación no disponible, se usa validación local.", error);
     return validarFormatoLocal(telefono);
@@ -208,7 +213,7 @@ function construirMensajePedido() {
 
   const total = carrito.reduce((suma, item) => suma + item.precio * item.cantidad, 0);
   texto += `\nTotal: ${formatearPrecio(total)}`;
-  texto += `\nMi número: ${inputTelefono.value}`;
+  texto += `\nMi número: ${codigoPais} ${inputTelefono.value}`;
 
   return texto;
 }
@@ -289,3 +294,8 @@ btnCopiar.addEventListener("click", async () => {
     mostrarErrorTelefono("No se pudo copiar. Intenta de nuevo.");
   }
 });
+
+// ===== ARRANQUE =====
+pintarFiltros();
+pintarProductos();
+pintarCarrito();
