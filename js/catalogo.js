@@ -65,6 +65,9 @@ function pintarProductos() {
       <img src="${producto.imagen}" alt="${producto.nombre}" class="w-full h-40 object-contain rounded-lg mb-3 bg-white">
       <p class="text-xs text-neutral-500">${producto.marca}</p>
       <h3 class="text-sm font-medium">${producto.nombre}</h3>
+      <p class="text-xs mt-1 ${producto.stock > 0 ? 'text-neutral-500' : 'text-red-600 font-semibold'}">
+        ${producto.stock > 0 ? producto.stock + " disponibles" : "Agotado"}
+      </p>
       <div class="flex items-center justify-between mt-2">
         <span class="text-sm font-semibold">${formatearPrecio(producto.precio)}</span>
         <button
@@ -89,6 +92,12 @@ function pintarProductos() {
 function agregarAlCarrito(id) {
   const producto = productos.find((p) => p.id === id);
   const existente = carrito.find((item) => item.id === id);
+  const cantidadEnCarrito = existente ? existente.cantidad : 0;
+
+  if (cantidadEnCarrito >= producto.stock) {
+    Swal.fire("Sin existencias", `Solo quedan ${producto.stock} unidades de ${producto.nombre}.`, "warning");
+    return;
+  }
 
   if (existente) {
     existente.cantidad = existente.cantidad + 1;
@@ -153,7 +162,7 @@ inputBuscador.addEventListener("input", (evento) => {
   pintarProductos();
 });
 
-// ===== VALIDACIÓN DE TELÉFONO CON API EXTERNA =====
+// ===== VALIDACIÓN DE TELÉFONO (LOCAL) =====
 const inputTelefono = document.getElementById("telefono");
 const errorTelefono = document.getElementById("error-telefono");
 const btnWhatsapp = document.getElementById("btn-whatsapp");
@@ -162,12 +171,7 @@ const btnCopiar = document.getElementById("btn-copiar");
 // Número de WhatsApp del negocio (formato internacional sin +)
 const NUMERO_NEGOCIO = "50377777777";
 
-// Por ahora la validación es local (sin API externa)
-async function validarTelefonoConAPI(telefono) {
-  return validarFormatoLocal(telefono);
-}
-
-// Código del país, lo actualiza la API. Valor por defecto por si no responde.
+// Código del país por defecto
 let codigoPais = "+503";
 
 function mostrarErrorTelefono(mensaje) {
@@ -183,26 +187,6 @@ function mostrarErrorTelefono(mensaje) {
 function validarFormatoLocal(telefono) {
   const soloNumeros = telefono.replace(/\D/g, "");
   return /^[67]\d{7}$/.test(soloNumeros);
-}
-
-// Valida el número con la API externa de Abstract indicando que es de El Salvador.
-// Si la API falla, usamos la validación local para no bloquear al usuario.
-async function validarTelefonoConAPI(telefono) {
-  const soloNumeros = telefono.replace(/\D/g, "");
-  try {
-    const respuesta = await fetch(
-      `https://phoneintelligence.abstractapi.com/v1/?api_key=${API_KEY_TELEFONO}&phone=${soloNumeros}&country=SV`
-    );
-    if (!respuesta.ok) throw new Error("API no disponible");
-    const datos = await respuesta.json();
-    if (datos.phone_location && datos.phone_location.country_prefix) {
-      codigoPais = datos.phone_location.country_prefix;
-    }
-    return datos.phone_validation && datos.phone_validation.is_valid === true;
-  } catch (error) {
-    console.warn("API de validación no disponible, se usa validación local.", error);
-    return validarFormatoLocal(telefono);
-  }
 }
 
 // Arma el texto del pedido
@@ -237,7 +221,7 @@ function registrarPedido() {
 }
 
 btnWhatsapp.addEventListener("click", async () => {
-    if (carrito.length === 0) {
+  if (carrito.length === 0) {
     Swal.fire("Carrito vacío", "Agrega productos antes de enviar tu pedido.", "warning");
     return;
   }
@@ -254,29 +238,27 @@ btnWhatsapp.addEventListener("click", async () => {
     return;
   }
 
-  btnWhatsapp.textContent = "Validando número...";
-  btnWhatsapp.disabled = true;
-
-  const esValido = await validarTelefonoConAPI(telefono);
-
-  btnWhatsapp.textContent = "Enviar pedido por WhatsApp";
-  btnWhatsapp.disabled = false;
-
-  if (!esValido) {
-    mostrarErrorTelefono("El número no parece válido. Revísalo por favor.");
-    return;
-  }
-
   mostrarErrorTelefono("");
   registrarPedido();
 
+  // Descontamos las existencias de los productos vendidos
+  carrito.forEach((item) => {
+    const producto = productos.find((p) => p.id === item.id);
+    producto.stock = producto.stock - item.cantidad;
+  });
+  guardarProductos(productos);
+
   // encodeURIComponent convierte el texto a formato seguro para URL
   const mensaje = encodeURIComponent(construirMensajePedido());
-    Swal.fire("¡Pedido listo!", "Te redirigimos a WhatsApp para confirmar tu compra.", "success");
+  window.open(`https://wa.me/${NUMERO_NEGOCIO}?text=${mensaje}`, "_blank");
+
+  Swal.fire("¡Pedido listo!", "Te redirigimos a WhatsApp para confirmar tu compra.", "success");
+
   // Vaciamos el carrito después de enviar
   carrito = [];
   guardarCarrito(carrito);
   pintarCarrito();
+  pintarProductos();
 });
 
 btnCopiar.addEventListener("click", async () => {
