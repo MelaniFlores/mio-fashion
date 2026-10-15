@@ -233,21 +233,29 @@ function pintarMetricas() {
 }
 
 // ===== GRÁFICA =====
+const NOMBRES_MESES = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+
+// Cuenta cuántos registros hay en cada mes. Las fechas vienen como dd/mm/aaaa
+function contarPorMes(registros) {
+  const conteo = new Array(12).fill(0);
+  registros.forEach((registro) => {
+    const mes = parseInt(registro.fecha.split("/")[1]) - 1;
+    if (mes >= 0 && mes < 12) conteo[mes]++;
+  });
+  return conteo;
+}
+
 function pintarGrafica() {
-  const meses = ["Abr", "May", "Jun", "Jul", "Ago", "Sep"];
   const solicitudes = obtenerSolicitudes();
   const pedidos = JSON.parse(localStorage.getItem("pedidos") || "[]");
-
-  const datosPedidos = [8, 12, 9, 15, 18, pedidos.length];
-  const datosSolicitudes = [3, 5, 4, 7, 6, solicitudes.length];
 
   new Chart(document.getElementById("grafica"), {
     type: "bar",
     data: {
-      labels: meses,
+      labels: NOMBRES_MESES,
       datasets: [
-        { label: "Pedidos", data: datosPedidos, backgroundColor: "#171717" },
-        { label: "Solicitudes", data: datosSolicitudes, backgroundColor: "#ec4899" },
+        { label: "Pedidos", data: contarPorMes(pedidos), backgroundColor: "#171717" },
+        { label: "Solicitudes", data: contarPorMes(solicitudes), backgroundColor: "#ec4899" },
       ],
     },
     options: {

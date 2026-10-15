@@ -162,8 +162,10 @@ const btnCopiar = document.getElementById("btn-copiar");
 // Número de WhatsApp del negocio (formato internacional sin +)
 const NUMERO_NEGOCIO = "50377777777";
 
-// Llave de Abstract Phone Intelligence API
-const API_KEY_TELEFONO = "7b2199ae102e4a59b1eaface38887da9";
+// Por ahora la validación es local (sin API externa)
+async function validarTelefonoConAPI(telefono) {
+  return validarFormatoLocal(telefono);
+}
 
 // Código del país, lo actualiza la API. Valor por defecto por si no responde.
 let codigoPais = "+503";
@@ -235,8 +237,8 @@ function registrarPedido() {
 }
 
 btnWhatsapp.addEventListener("click", async () => {
-  if (carrito.length === 0) {
-    mostrarErrorTelefono("Agrega productos al carrito antes de enviar.");
+    if (carrito.length === 0) {
+    Swal.fire("Carrito vacío", "Agrega productos antes de enviar tu pedido.", "warning");
     return;
   }
 
@@ -270,8 +272,7 @@ btnWhatsapp.addEventListener("click", async () => {
 
   // encodeURIComponent convierte el texto a formato seguro para URL
   const mensaje = encodeURIComponent(construirMensajePedido());
-  window.open(`https://wa.me/${NUMERO_NEGOCIO}?text=${mensaje}`, "_blank");
-
+    Swal.fire("¡Pedido listo!", "Te redirigimos a WhatsApp para confirmar tu compra.", "success");
   // Vaciamos el carrito después de enviar
   carrito = [];
   guardarCarrito(carrito);
