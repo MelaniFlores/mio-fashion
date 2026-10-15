@@ -204,13 +204,15 @@ function construirMensajePedido() {
   return texto;
 }
 
-// Guarda el pedido para que aparezca en las métricas del dashboard
+// Guarda el pedido para el dashboard y para el historial del cliente
 function registrarPedido() {
   const pedidos = JSON.parse(localStorage.getItem("pedidos") || "[]");
   const total = carrito.reduce((suma, item) => suma + item.precio * item.cantidad, 0);
+  const sesion = obtenerSesion();
 
   pedidos.push({
     id: Date.now(),
+    cliente: sesion ? sesion.correo : "invitado",
     productos: carrito,
     total,
     telefono: inputTelefono.value,
