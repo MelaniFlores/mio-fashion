@@ -20,4 +20,13 @@ if (sesionActiva && enlaceLogin) {
     localStorage.removeItem("sesion");
     window.location.reload();
   });
+// Menú desplegable en celular
+const btnMenu = document.getElementById("btn-menu");
+const menuPrincipal = document.getElementById("menu-principal");
+
+if (btnMenu && menuPrincipal) {
+  btnMenu.addEventListener("click", () => {
+    menuPrincipal.classList.toggle("hidden");
+  });
+}
 }

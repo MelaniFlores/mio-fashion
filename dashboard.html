@@ -8,13 +8,15 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+  <script src="js/tema.js"></script>
 <body class="bg-white text-neutral-900 font-sans">
 
-  <header class="border-b border-neutral-200">
+    <header class="border-b border-neutral-200">
     <nav class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-      <a href="index.html"><img src="img/logo.png" alt="Mío Fashion" class="h-14 w-auto"></a>
+      <a href="index.html"><img src="img/logo.png" alt="Mío Fashion" class="h-12 w-auto"></a>
       <div class="flex items-center gap-4 text-sm">
         <span id="nombre-usuario" class="text-neutral-500"></span>
+                <button id="btn-tema" class="text-sm border border-neutral-300 px-3 py-2 rounded-full hover:border-pink-600" aria-label="Cambiar tema">🌙</button>
         <button id="btn-salir" class="border border-neutral-300 px-4 py-2 rounded-full hover:border-neutral-900">
           Cerrar sesión
         </button>

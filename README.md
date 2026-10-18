@@ -37,15 +37,10 @@ fuera de catálogo.
    eliminar), métricas del negocio, gráfica de pedidos y solicitudes por mes, y listado de
    solicitudes recibidas.
 
-## Roles y credenciales de prueba
+### Acceso de prueba
 
-| Rol | Correo | Contraseña |
-|---|---|---|
-| Administrador | admin@miofashion.com | Admin123 |
-| Cliente | Registrarse desde la aplicación | — |
+Regístrate como cliente desde la pantalla de Iniciar sesión. Para ingresar como administradora, solicita las credenciales al equipo del proyecto.
 
-El administrador accede al dashboard; el cliente al catálogo. Las rutas del panel están
-protegidas: sin sesión de administrador se redirige al login.
 
 ## Vistas
 
