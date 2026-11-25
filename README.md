@@ -1,6 +1,6 @@
 # Mío Fashion — Aplicación Web (React)
 
-Proyecto de cátedra, Avance 2 (integración del framework JS).
+Proyecto de cátedra — Entrega final (proyecto web completo).
 Asignatura: Desarrollo de Aplicaciones Web con Software Interpretados en el Cliente (DAW901).
 Universidad Don Bosco.
 
@@ -10,6 +10,10 @@ Universidad Don Bosco.
 ## Enlace del despliegue
 
 https://mio-fashion.vercel.app
+
+## Repositorio
+
+https://github.com/MelaniFlores/mio-fashion
 
 ## Descripción
 
@@ -106,3 +110,46 @@ Regístrate como cliente desde la pantalla de Iniciar sesión. Para ingresar com
 - Las contraseñas se guardan sin cifrar porque es un proyecto académico sin servidor.
 - Los datos guardados por la versión anterior (JS vanilla) se migran automáticamente al abrir esta versión.
 - Si la Makeup API no responde, la sección muestra un mensaje con botón "Reintentar" y el resto del sitio sigue funcionando.
+
+## Mockups de la Etapa 1 (Figma)
+
+Diseños de la Etapa 1 creados en Figma: https://www.figma.com/design/DXCUEDcaiBW3sh7bZ10KD1/Mio-fashion
+
+Son mockups de baja fidelidad (sin fotos de producto, con recuadros grises como marcador). La interfaz final conserva
+la estructura de cada pantalla y completa las imágenes, los datos y los módulos de administración.
+
+### Versión móvil
+
+| Inicio | Catálogo | Pedido | Solicitudes | Acerca de nosotros |
+|:--:|:--:|:--:|:--:|:--:|
+| <img src="docs/mockups/inicio-movil.png" width="170"> | <img src="docs/mockups/catalogo-movil.png" width="170"> | <img src="docs/mockups/pedido-movil.png" width="170"> | <img src="docs/mockups/solicitudes-movil.png" width="170"> | <img src="docs/mockups/nosotros-movil.png" width="170"> |
+
+### Versión escritorio
+
+**Inicio**
+
+![Mockup inicio escritorio](docs/mockups/inicio-escritorio.png)
+
+**Catálogo con panel de pedido**
+
+![Mockup catálogo escritorio](docs/mockups/catalogo-escritorio.png)
+
+### Sitio final (capturas)
+
+| Vista | Captura |
+|-------|---------|
+| Inicio | ![Inicio](docs/capturas/inicio.png) |
+| Catálogo | ![Catálogo](docs/capturas/catalogo.png) |
+
+## Trabajo en equipo (GitHub)
+
+Una rama por integrante y todos como colaboradores del repositorio.
+
+| Integrante | Carnet | Rama |
+|------------|--------|------|
+| Melani Adriana Flores Mendoza | FM250096 | `melani` |
+
+## Licencia
+
+Este proyecto se publica bajo la licencia **Creative Commons Atribución 4.0 Internacional (CC BY 4.0)**.
+Consulta el archivo [LICENSE](LICENSE) o https://creativecommons.org/licenses/by/4.0/deed.es

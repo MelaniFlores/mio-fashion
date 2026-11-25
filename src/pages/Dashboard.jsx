@@ -13,6 +13,7 @@ import { useProducts } from "../context/ProductsContext";
 import { usePedidosFiltrados } from "../hooks/usePedidosFiltrados";
 import { confirmar, toast } from "../lib/alertas";
 import { formatearPrecio } from "../lib/formato";
+import { generarReportePdf } from "../lib/reportePdf";
 
 const NOMBRES_TRIMESTRE = { 1: "Ene–Mar", 2: "Abr–Jun", 3: "Jul–Sep", 4: "Oct–Dic" };
 
@@ -25,6 +26,7 @@ export default function Dashboard() {
   const [trimestre, setTrimestre] = useState("todos");
   const [editando, setEditando] = useState(null);
   const formularioRef = useRef(null);
+  const graficasRef = useRef(null);
 
   const estadisticas = usePedidosFiltrados(anio, trimestre);
 
@@ -40,6 +42,11 @@ export default function Dashboard() {
   const empezarEdicion = (producto) => {
     setEditando(producto);
     formularioRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const descargarPdf = () => {
+    generarReportePdf({ periodo, estadisticas, productos, contenedorGraficas: graficasRef.current });
+    toast("success", "Reporte PDF generado");
   };
 
   const alternarDemo = async () => {
@@ -66,13 +73,22 @@ export default function Dashboard() {
           <h1 className="text-2xl font-semibold">Panel de administración</h1>
           {sesion?.nombre && <p className="text-sm text-neutral-500 mt-1">Hola, {sesion.nombre}</p>}
         </div>
-        <FiltrosPeriodo
-          anio={anio}
-          trimestre={trimestre}
-          anios={estadisticas.aniosDisponibles}
-          alCambiarAnio={setAnio}
-          alCambiarTrimestre={setTrimestre}
-        />
+        <div className="flex flex-wrap items-end gap-3">
+          <FiltrosPeriodo
+            anio={anio}
+            trimestre={trimestre}
+            anios={estadisticas.aniosDisponibles}
+            alCambiarAnio={setAnio}
+            alCambiarTrimestre={setTrimestre}
+          />
+          <button
+            type="button"
+            onClick={descargarPdf}
+            className="text-sm bg-neutral-900 text-white px-5 py-2.5 rounded-full hover:bg-neutral-700"
+          >
+            Descargar reporte PDF
+          </button>
+        </div>
       </div>
 
       <section aria-label="Métricas" className="grid grid-cols-2 md:grid-cols-5 gap-4 -mt-4">
@@ -93,6 +109,7 @@ export default function Dashboard() {
 
       <Recomendaciones estadisticas={estadisticas} />
 
+      <div ref={graficasRef} className="flex flex-col gap-10">
       <GraficaMensual
         etiquetas={estadisticas.etiquetasMeses}
         pedidos={estadisticas.pedidosPorMes}
@@ -103,6 +120,7 @@ export default function Dashboard() {
       <div className="grid md:grid-cols-2 gap-6">
         <GraficaMasVendidos ranking={estadisticas.masVendidos} periodo={periodo} />
         <GraficaAnual etiquetas={estadisticas.pedidosPorAnio.etiquetas} datos={estadisticas.pedidosPorAnio.datos} />
+      </div>
       </div>
 
       <PedidosAdmin />
