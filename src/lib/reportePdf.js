@@ -10,7 +10,8 @@ function canvasAImagen(canvas) {
   copia.width = canvas.width;
   copia.height = canvas.height;
   const ctx = copia.getContext("2d");
-  ctx.fillStyle = "#ffffff";
+  const oscuro = document.documentElement.classList.contains("modo-oscuro");
+  ctx.fillStyle = oscuro ? "#171717" : "#ffffff";
   ctx.fillRect(0, 0, copia.width, copia.height);
   ctx.drawImage(canvas, 0, 0);
   return { data: copia.toDataURL("image/png"), ancho: canvas.width, alto: canvas.height };
